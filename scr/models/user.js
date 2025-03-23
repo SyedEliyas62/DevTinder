@@ -9,6 +9,7 @@ const UserSchema = new Schema(
     firstName: {
       type: String,
       required: true,
+      index:true,
       minLength: 4,
       maxLength: 50,
     },
@@ -43,11 +44,15 @@ const UserSchema = new Schema(
     },
     gender: {
       type: String,
-      validate(value) {
-        if (!["male", "female", "others"].includes(value)) {
-          throw new Error("Gender data is not valid");
-        }
-      },
+      enum :{
+        values:["male", "female", "others"],
+        message:`{vlaues is not valid gender type}`
+      }
+      // validate(value) {
+      //   if (!["male", "female", "others"].includes(value)) {
+      //     throw new Error("Gender data is not valid");
+      //   }
+      // },
     },
     photoUrl: {
       type: String,
@@ -80,6 +85,8 @@ UserSchema.methods.getJWT = async function () {
 
   return token;
 };
+
+
 
 UserSchema.methods.validatePassword = async function (passwordInputUser) {
   const user = this;
