@@ -23,9 +23,7 @@ requestRouter.post(
 
       const toUser = await User.findById(toUserId);
       if (!toUser) {
-        return res.status(400).json({
-          message: "User not found",
-        });
+        return res.status(404).json({ message: "User not found!" });
       }
 
       const existingConnectionRequest = await ConnectionRequest.findOne({
@@ -37,7 +35,7 @@ requestRouter.post(
       if (existingConnectionRequest) {
         return res
           .status(400)
-          .send({ message: "connecetion request already Exists" });
+          .send({ message: "Connection Request Already Exists!!" });
       }
 
       const connectionRequest = new ConnectionRequest({
@@ -48,13 +46,14 @@ requestRouter.post(
 
       const data = await connectionRequest.save();
 
+
       res.json({
         message:
-          req.user.firstName + "is " + status + " in " + toUser.firstName,
+          req.user.firstName + " is " + status + " in " + toUser.firstName,
         data,
       });
     } catch (err) {
-      res.status(400).send("ERROR:" + err.message);
+      res.status(400).send("ERROR: " + err.message);
     }
   }
 );
